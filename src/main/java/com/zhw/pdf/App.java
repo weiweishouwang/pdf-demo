@@ -42,8 +42,8 @@ public class App
         String src = "/Users/hongweizou/Downloads/【医脉通】糖尿病患者血糖波动管理专家共识.pdf";
 
 
-        //manipulatePdf(src, desc);
-        removeAll();
+        manipulatePdf(src, desc);
+        //removeAll();
     }
 
     public static void removeAll() throws IOException {
@@ -65,6 +65,18 @@ public class App
     public static void removeText(PdfDocument pdfDoc) {
         for (int i = 1; i <= pdfDoc.getNumberOfPages(); i++) {
             PdfPage page = pdfDoc.getPage(i);
+
+            PdfArray pdfObject = (PdfArray) page.getPdfObject().get(PdfName.Contents);
+            Iterator<PdfObject> it = pdfObject.iterator();
+            while (it.hasNext()) {
+                PdfObject object = it.next();
+                System.out.println(object.getIndirectReference());
+                object.isStream();
+                if (object.isStream()) {
+
+                }
+            }
+
             RegexBasedLocationExtractionStrategy strategy = new RegexBasedLocationExtractionStrategy("http://guide.medlive.cn/");
             PdfCanvasProcessor canvasProcessor = new PdfCanvasProcessor(strategy);
             canvasProcessor.processPageContent(page);
@@ -185,12 +197,13 @@ public class App
     public static void manipulatePdf(String src, String dest) throws Exception {
         PdfDocument pdfDoc = new PdfDocument(new PdfReader(src), new PdfWriter(dest));
         List<String> imageList = getImageName(pdfDoc);
-        removeText(pdfDoc);
         for (int i = 1; i <= pdfDoc.getNumberOfPages(); i++) {
             PdfDictionary page = pdfDoc.getPage(i).getPdfObject();
+            //page.remove(PdfName.Contents);
             removeImage(imageList, page);
             removeLink(page);
         }
+        removeText(pdfDoc);
 
         pdfDoc.close();
     }
