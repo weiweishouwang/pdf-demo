@@ -17,6 +17,7 @@
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
     <itext.version>7.1.15</itext.version>
+    <cleanup.version>2.0.6</cleanup.version>
   </properties>
 
   <dependencies>
@@ -88,6 +89,13 @@
       <groupId>com.itextpdf</groupId>
       <artifactId>itext-asian</artifactId>
       <version>5.2.0</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.itextpdf</groupId>
+      <artifactId>cleanup</artifactId>
+      <version>${cleanup.version}</version>
+      <scope>compile</scope>
     </dependency>
 
     <dependency>
