@@ -75,6 +75,7 @@ public class App
             Collection<IPdfTextLocation> resultantLocations = strategy.getResultantLocations();
 
             for (IPdfTextLocation location : resultantLocations) {
+                System.out.println("location " + location.getRectangle().toString());
                 cleanUpLocations.add(new PdfCleanUpLocation(i, new Rectangle(location.getRectangle().getX() - 1
                         , location.getRectangle().getY() - 1
                         , location.getRectangle().getWidth() + 1
