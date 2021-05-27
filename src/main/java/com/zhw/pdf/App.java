@@ -36,8 +36,10 @@ import java.util.*;
  */
 public class App 
 {
-    private static final String src = "/Users/hongweizou/Downloads/pdf/src/";
-    private static final String desc = "/Users/hongweizou/Downloads/pdf/desc/";
+    //private static final String src = "/Users/hongweizou/Downloads/pdf/src/";
+    //private static final String desc = "/Users/hongweizou/Downloads/pdf/desc/";
+    public static final String SRC = "./src/main/resources/pdfs/";
+    public static final String DEST = "./target/pdfs/";
 
     public static void main( String[] args ) throws Exception {
         System.out.println("Hello World!");
@@ -54,8 +56,8 @@ public class App
     }
 
     public static void removeAll() throws IOException {
-        Files.list(Paths.get(src)).forEach(file -> {
-            String descFile = desc + file.getFileName().toString();
+        Files.list(Paths.get(SRC)).forEach(file -> {
+            String descFile = DEST + file.getFileName().toString();
             System.out.println(descFile);
             try {
                 manipulatePdf(file.toString(), descFile);
