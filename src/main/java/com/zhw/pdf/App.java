@@ -38,7 +38,7 @@ public class App
 {
     //private static final String src = "/Users/hongweizou/Downloads/pdf/src/";
     //private static final String desc = "/Users/hongweizou/Downloads/pdf/desc/";
-    public static final String SRC = "./src/main/resources/pdfs/";
+    public static final String SRC = "./src/main/resources/pdfs_in/";
     public static final String DEST = "./target/pdfs/";
 
     public static void main( String[] args ) throws Exception {
@@ -48,8 +48,9 @@ public class App
         //String src = "/Users/hongweizou/Downloads/GUIDE_354a90d2d8.pdf";
         //String src = "/Users/hongweizou/Downloads/GUIDE_58556eb183.pdf";
         //String src = "/Users/hongweizou/Downloads/【医脉通】女性抗栓治疗的中国专家建议.pdf";
-        String src = "/Users/hongweizou/Downloads/【医脉通】糖尿病患者血糖波动管理专家共识.pdf";
+        //String src = "/Users/hongweizou/Downloads/【医脉通】糖尿病患者血糖波动管理专家共识.pdf";
         //String src = "/Users/hongweizou/Downloads/test3.pdf";
+        //String src = "/Users/hongweizou/Downloads/【医脉通】中国中青年高血压管理专家共识.pdf";
 
         //manipulatePdf(src, desc);
         removeAll();
@@ -108,11 +109,13 @@ public class App
                 PdfDictionary next = (PdfDictionary) pdfObject;
                 PdfDictionary uriDic = next.getAsDictionary(PdfName.A);
                 if (uriDic != null) {
-                    String uri = uriDic.getAsString(PdfName.URI).getValue();
-                    System.out.println(uri);
-                    if (uri == null || uri.contains("medlive") || uri.trim().equals("")) {
-                        System.out.println("delete link " + uri);
-                        iterator.remove();
+                    if (uriDic.containsKey(PdfName.URI)) {
+                        String uri = uriDic.getAsString(PdfName.URI).getValue();
+                        System.out.println(uri);
+                        if (uri == null || uri.contains("medlive") || uri.trim().equals("")) {
+                            System.out.println("delete link " + uri);
+                            iterator.remove();
+                        }
                     }
                 }
             }
@@ -133,6 +136,9 @@ public class App
             PdfDictionary page = pdfDoc.getPage(i).getPdfObject();
             PdfDictionary resources = page.getAsDictionary(PdfName.Resources);
             PdfDictionary xobjects = resources.getAsDictionary(PdfName.XObject);
+            if (xobjects == null) {
+                continue;
+            }
             Iterator<Map.Entry<PdfName, PdfObject>> it = xobjects.entrySet().iterator();
 
             while (it.hasNext()) {
@@ -172,6 +178,9 @@ public class App
     public static void removeImage(List<String> imageList, PdfDictionary page) {
         PdfDictionary resources = page.getAsDictionary(PdfName.Resources);
         PdfDictionary xobjects = resources.getAsDictionary(PdfName.XObject);
+        if (xobjects == null) {
+            return;
+        }
         Iterator<Map.Entry<PdfName, PdfObject>> it = xobjects.entrySet().iterator();
         while (it.hasNext()) {
             Map.Entry<PdfName, PdfObject> next = it.next();
